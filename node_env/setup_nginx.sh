@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define the server name and app port
-SERVER_NAME="example.com www.example.com"
+SERVER_NAME="yourdomain.com www.yourdomain.com"
 APP_PORT="8001"
 
 # Backup the default Nginx configuration
@@ -12,10 +12,11 @@ sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.ba
 echo "Setting up Nginx configuration..."
 sudo bash -c "cat > /etc/nginx/sites-available/default <<EOF
 server {
+    listen 80; # Listen on port 80 (HTTP)
     server_name $SERVER_NAME;
 
     location / {
-        proxy_pass http://localhost:$APP_PORT; # whatever port your app runs on
+        proxy_pass http://localhost:$APP_PORT; # Whatever port your app runs on
         proxy_http_version 1.1;
         proxy_set_header Upgrade \$http_upgrade;
         proxy_set_header Connection 'upgrade';
@@ -35,4 +36,3 @@ else
     echo "Nginx configuration is invalid. Please check the configuration."
     exit 1
 fi
-
